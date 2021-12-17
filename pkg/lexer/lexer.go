@@ -34,23 +34,21 @@ func (s *Scanner) Scan() (token.Token, string) {
 
 	switch ch {
 	case eof:
-		return token.EOF, ""
+		return &token.EOF{}, ""
 	case '(':
-		return token.LPAREN, string(ch)
+		return &token.LPAREN{}, string(ch)
 	case ')':
-		return token.RPAREN, string(ch)
-	case '&':
-		return token.AND, string(ch)
+		return &token.RPAREN{}, string(ch)
 	case '-':
 		if s.read() == '>' {
-			return token.OPERAND, "->"
+			return &token.OPERAND{}, "->"
 		}
 		s.unread()
 	case '"':
 		return s.scanQuote()
 	}
 
-	return token.ILLEGAL, string(ch)
+	return &token.ILLEGAL{}, string(ch)
 }
 
 func (s *Scanner) scanWhitespace() (token.Token, string) {
@@ -72,7 +70,7 @@ func (s *Scanner) scanWhitespace() (token.Token, string) {
 		}
 	}
 
-	return token.WS, buf.String()
+	return &token.WS{}, buf.String()
 }
 
 func (s *Scanner) scanQuote() (token.Token, string) {
@@ -84,13 +82,13 @@ func (s *Scanner) scanQuote() (token.Token, string) {
 		if ch := s.read(); ch == '"' {
 			break
 		} else if ch == eof {
-			return token.ILLEGAL, "il manque un guillement de fermeture"
+			return &token.ILLEGAL{}, "il manque un guillement de fermeture"
 		} else {
 			buf.WriteRune(ch)
 		}
 	}
 
-	return token.IDENTIFIER, buf.String()
+	return &token.IDENTIFIER{}, buf.String()
 }
 
 func (s *Scanner) scanIdentifier() (token.Token, string) {
@@ -113,14 +111,12 @@ func (s *Scanner) scanIdentifier() (token.Token, string) {
 
 	switch strings.ToLower(str) {
 	case "space":
-		return token.SPACE, " "
+		return &token.SPACE{}, " "
 	case "file":
-		return token.FILE, "file"
-	case "whole":
-		return token.WHOLE, "whole"
+		return &token.FILE{}, "file"
 	}
 
-	return token.IDENTIFIER, str
+	return &token.IDENTIFIER{}, str
 }
 
 // read lit la prochaine rune du buffered reader.
