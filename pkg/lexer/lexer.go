@@ -2,7 +2,10 @@ package lexer
 
 import (
 	"bufio"
+	"bytes"
+	"github.com/Capucinoxx/gox/pkg/token"
 	"io"
+	"strings"
 )
 
 var eof = rune(0)
@@ -14,6 +17,110 @@ type Scanner struct {
 // NewScanner retournes une nouvelle instance de Scanner
 func NewScanner(reader io.Reader) *Scanner {
 	return &Scanner{reader: bufio.NewReader(reader)}
+}
+
+func (s *Scanner) Scan() (token.Token, string) {
+	ch := s.read()
+
+	if isWhitespace(ch) {
+		s.unread()
+		return s.scanWhitespace()
+	}
+
+	if isLetter(ch) {
+		s.unread()
+		return s.scanIdentifier()
+	}
+
+	switch ch {
+	case eof:
+		return token.EOF, ""
+	case '(':
+		return token.LPAREN, string(ch)
+	case ')':
+		return token.RPAREN, string(ch)
+	case '&':
+		return token.AND, string(ch)
+	case '-':
+		if s.read() == '>' {
+			return token.OPERAND, "->"
+		}
+		s.unread()
+	case '"':
+		return s.scanQuote()
+	}
+
+	return token.ILLEGAL, string(ch)
+}
+
+func (s *Scanner) scanWhitespace() (token.Token, string) {
+	// création d'un buffer et fait la lecture du caractère courant à l'intérieur
+	var buf bytes.Buffer
+	buf.WriteRune(s.read())
+
+	// lecture de chaque caractère d'espacement suivant dans le tampon.
+	// les caractères qui ne sont pas des caractères d'espacement et eof
+	// entraîneront la sortie de la boucle.
+	for {
+		if ch := s.read(); ch == eof {
+			break
+		} else if !isWhitespace(ch) {
+			s.unread()
+			break
+		} else {
+			buf.WriteRune(ch)
+		}
+	}
+
+	return token.WS, buf.String()
+}
+
+func (s *Scanner) scanQuote() (token.Token, string) {
+	// création d'un buffer et fait la lecture du caractère courant à l'intérieur
+	var buf bytes.Buffer
+	buf.WriteRune(s.read())
+
+	for {
+		if ch := s.read(); ch == '"' {
+			break
+		} else if ch == eof {
+			return token.ILLEGAL, "il manque un guillement de fermeture"
+		} else {
+			buf.WriteRune(ch)
+		}
+	}
+
+	return token.IDENTIFIER, buf.String()
+}
+
+func (s *Scanner) scanIdentifier() (token.Token, string) {
+	// création d'un buffer et fait la lecture du caractère courant à l'intérieur
+	var buf bytes.Buffer
+	buf.WriteRune(s.read())
+
+	for {
+		if ch := s.read(); ch == eof {
+			break
+		} else if !isLetter(ch) && !isDigit(ch) && ch != '_' {
+			s.unread()
+			break
+		} else {
+			buf.WriteRune(ch)
+		}
+	}
+
+	str := buf.String()
+
+	switch strings.ToLower(str) {
+	case "space":
+		return token.SPACE, " "
+	case "file":
+		return token.FILE, "file"
+	case "whole":
+		return token.WHOLE, "whole"
+	}
+
+	return token.IDENTIFIER, str
 }
 
 // read lit la prochaine rune du buffered reader.
@@ -29,15 +136,6 @@ func (s *Scanner) read() rune {
 // unread replaces la rune précédemment lue sur le lecteur
 func (s *Scanner) unread() { _ = s.reader.UnreadRune() }
 
-// skipWhitespace déplace le curseur jusqu'à temps qu'il fasse la lecture
-// d'une rune n'étant pas un espace, une tabulation ou un changement de ligne
-func (s *Scanner) skipWhitespace(ch rune) rune {
-	for isWhitespace(ch) {
-		ch = s.read()
-	}
-	return ch
-}
-
 // isWhitespace regarde si le caratère est un espace, une tabluation ou un
 // changement de ligne
 func isWhitespace(ch rune) bool {
@@ -46,4 +144,8 @@ func isWhitespace(ch rune) bool {
 
 func isLetter(ch rune) bool {
 	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
+}
+
+func isDigit(ch rune) bool {
+	return ch >= 0 && ch <= 9
 }
