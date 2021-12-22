@@ -32,6 +32,11 @@ func TestObject(t *testing.T) {
 			t:       object.OBJECT_ARRAY,
 			wantStr: "[64, test]",
 		},
+		"object null": {
+			obj:     object.Null{},
+			t:       object.OBJECT_NULL,
+			wantStr: "null",
+		},
 	}
 
 	for name, tt := range cases {
