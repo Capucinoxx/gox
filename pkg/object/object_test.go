@@ -18,6 +18,12 @@ func TestObject(t *testing.T) {
 			wantStr: "64",
 			value:   64.0,
 		},
+		"object string": {
+			obj:     object.String{Value: "test"},
+			t:       object.OBJECT_STRING,
+			wantStr: "test",
+			value:   "test",
+		},
 	}
 
 	for name, tt := range cases {
@@ -40,12 +46,12 @@ func TestObject(t *testing.T) {
 				)
 			}
 
-			if tt.obj.ToInterface() != tt.value {
+			if ((tt.obj.ToInterface()).(object.Object)) != tt.obj {
 				t.Errorf(
 					"%q interface mismatch: exp=%v got=%q",
 					tt.obj,
-					tt.obj.ToInterface(),
-					tt.value,
+					tt.obj,
+					(tt.obj.ToInterface()).(object.Object),
 				)
 			}
 		})
