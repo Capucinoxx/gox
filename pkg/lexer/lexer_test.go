@@ -21,7 +21,6 @@ func TestToken(t *testing.T) {
 		"identifier": {c: `toto`, tkn: &token.IDENTIFIER{}, literal: "toto"},
 
 		/* --- misc characters --- */
-		"space":             {c: `space`, tkn: &token.SPACE{}, literal: " "},
 		"left parenthesis":  {c: `(`, tkn: &token.LPAREN{}, literal: "("},
 		"right parenthesis": {c: `)`, tkn: &token.RPAREN{}, literal: ")"},
 		"operand":           {c: `->`, tkn: &token.OPERAND{}, literal: "->"},
@@ -32,7 +31,7 @@ func TestToken(t *testing.T) {
 			scanner := lexer.NewScanner(strings.NewReader(tt.c))
 			tkn, literal := scanner.Scan()
 
-			if tt.tkn.GetToken() != tkn.GetToken() {
+			if tt.tkn.Token() != tkn.Token() {
 				t.Errorf(
 					"%q tkn mismatch: exp=%q got=%q <%q>",
 					tt.c,
@@ -55,21 +54,24 @@ func TestToken(t *testing.T) {
 }
 
 func TestInput(t *testing.T) {
-	input := `(file->keep "file.txt" ())`
+	input := `(+ 1 2 3  6 "5")`
 
 	want := []struct {
 		tkn     token.Token
 		literal string
 	}{
 		{&token.LPAREN{}, "("},
-		{&token.FILE{}, "file"},
-		{&token.OPERAND{}, "->"},
-		{&token.IDENTIFIER{}, "keep"},
+		{&token.OPERAND{}, "+"},
 		{&token.WS{}, " "},
-		{&token.IDENTIFIER{}, "file.txt"},
+		{&token.IDENTIFIER{}, "1"},
 		{&token.WS{}, " "},
-		{&token.LPAREN{}, "("},
-		{&token.RPAREN{}, ")"},
+		{&token.IDENTIFIER{}, "2"},
+		{&token.WS{}, " "},
+		{&token.IDENTIFIER{}, "3"},
+		{&token.WS{}, "  "},
+		{&token.IDENTIFIER{}, "6"},
+		{&token.WS{}, " "},
+		{&token.IDENTIFIER{}, "5"},
 		{&token.RPAREN{}, ")"},
 		{&token.EOF{}, ""},
 	}
@@ -79,8 +81,8 @@ func TestInput(t *testing.T) {
 	for i, tt := range want {
 		tkn, lit := scanner.Scan()
 
-		if tt.tkn.GetToken() != tkn.GetToken() {
-			t.Errorf("[%2d] -> token mismatch: exp=%q got=%q", i, tt.tkn, tkn)
+		if tt.tkn.Token() != tkn.Token() {
+			t.Errorf("[%2d] -> token mismatch: exp=%d got=%d", i, tt.tkn.Token(), tkn.Token())
 		}
 
 		if tt.literal != lit {

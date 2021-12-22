@@ -27,10 +27,11 @@ func (s *Scanner) Scan() (token.Token, string) {
 		return s.scanWhitespace()
 	}
 
-	if isLetter(ch) {
+	if isLetter(ch) || isDigit(ch) {
 		s.unread()
 		return s.scanIdentifier()
 	}
+
 
 	switch ch {
 	case eof:
@@ -39,11 +40,13 @@ func (s *Scanner) Scan() (token.Token, string) {
 		return &token.LPAREN{}, string(ch)
 	case ')':
 		return &token.RPAREN{}, string(ch)
-	case '-':
+	case '-', '+', '*', '/':
 		if s.read() == '>' {
-			return &token.OPERAND{}, "->"
+			return &token.OPERAND{}, string(ch)+ ">"
 		}
 		s.unread()
+		return &token.OPERAND{}, string(ch)
+
 	case '"':
 		return s.scanQuote()
 	}
@@ -110,10 +113,7 @@ func (s *Scanner) scanIdentifier() (token.Token, string) {
 	str := buf.String()
 
 	switch strings.ToLower(str) {
-	case "space":
-		return &token.SPACE{}, " "
-	case "file":
-		return &token.FILE{}, "file"
+
 	}
 
 	return &token.IDENTIFIER{}, str
@@ -143,5 +143,5 @@ func isLetter(ch rune) bool {
 }
 
 func isDigit(ch rune) bool {
-	return ch >= 0 && ch <= 9
+	return ch >= '0' && ch <= '9'
 }
