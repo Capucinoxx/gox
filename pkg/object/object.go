@@ -3,7 +3,7 @@ package object
 type Type uint8
 
 const (
-	OBJECT_NULL (uint8) = iota
+	OBJECT_NULL Type = iota
 	OBJECT_ERROR
 
 	OBJECT_ARRAY
