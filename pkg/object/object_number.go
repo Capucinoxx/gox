@@ -1,6 +1,8 @@
 package object
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Number objet représentant un nombre
 type Number struct{ Value float64 }
