@@ -2,6 +2,7 @@ package object_test
 
 import (
 	"github.com/Capucinoxx/gox/pkg/object"
+	"reflect"
 	"testing"
 )
 
@@ -10,19 +11,26 @@ func TestObject(t *testing.T) {
 		obj     object.Object
 		t       object.Type
 		wantStr string
-		value   interface{}
 	}{
 		"object number": {
 			obj:     object.Number{Value: 64},
 			t:       object.OBJECT_NUMBER,
 			wantStr: "64",
-			value:   64.0,
 		},
 		"object string": {
 			obj:     object.String{Value: "test"},
 			t:       object.OBJECT_STRING,
 			wantStr: "test",
-			value:   "test",
+		},
+		"object array": {
+			obj: object.Array{
+				Elements: []object.Object{
+					object.Number{Value: 64},
+					object.String{Value: "test"},
+				},
+			},
+			t:       object.OBJECT_ARRAY,
+			wantStr: "[64, test]",
 		},
 	}
 
@@ -46,7 +54,7 @@ func TestObject(t *testing.T) {
 				)
 			}
 
-			if ((tt.obj.ToInterface()).(object.Object)) != tt.obj {
+			if !reflect.DeepEqual((tt.obj.ToInterface()).(object.Object), tt.obj) {
 				t.Errorf(
 					"%q interface mismatch: exp=%v got=%q",
 					tt.obj,
