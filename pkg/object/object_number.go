@@ -7,9 +7,24 @@ import (
 // Number objet représentant un nombre
 type Number struct{ Value float64 }
 
-func (i Number) Type() Type               { return OBJECT_NUMBER }
-func (i Number) ToString() string         { return fmt.Sprint(i.Value) }
+// Type retourne le type de l'objet (OBJECT_NUMBER)
+func (i Number) Type() Type { return OBJECT_NUMBER }
+
+// ToString retournes la représentation sous forme de string la valeur
+// de l'obect (Number)
+func (i Number) ToString() string { return fmt.Sprint(i.Value) }
+
+// ToInterface retournes la valeur de l'objet (Number)
 func (i Number) ToInterface() interface{} { return i }
+
+// Add retournes une objet représentant l'addition du Nombre courant et celui
+// passé en paramètre
 func (i Number) Add(oth Object) Object {
-	return Number{Value: oth.(Number).Value + i.Value}
+	return Number{Value: i.Value + oth.(Number).Value}
+}
+
+// Sub retournes une objet représentant la soustraction du Nombre courant et
+// celui passé en paramètre
+func (i Number) Sub(oth Object) Object {
+	return Number{Value: i.Value - oth.(Number).Value}
 }

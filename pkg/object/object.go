@@ -25,5 +25,11 @@ type Object interface {
 	// ToInterface retournes la valeur de l'objet (Object)
 	ToInterface() interface{}
 
+	// Add retournes une objet représentant l'addition de l'objet courant
+	// et de l'objet en paramètre
 	Add(Object) Object
+
+	// Sub retournes une objet représentant la soustraction de l'objet courant
+	// et de l'objet en paramètre
+	Sub(Object) Object
 }
