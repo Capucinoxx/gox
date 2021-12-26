@@ -19,3 +19,6 @@ func (a Array) ToString() string {
 	return out.String()
 }
 func (a Array) ToInterface() interface{} { return a }
+func (a Array) Add(oth Object) Object {
+	return Array{Elements: append(a.Elements, oth.(Array).Elements...)}
+}

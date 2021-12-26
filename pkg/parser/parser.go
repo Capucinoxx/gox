@@ -9,14 +9,14 @@ import (
 
 type Parser struct {
 	scanner *lexer.Scanner
-	root *token.Node
+	root    *token.Node
 }
 
 // NewParser retournes une nouvelle instance de Parser
 func NewParser(reader io.Reader) *Parser {
 	return &Parser{
 		scanner: lexer.NewScanner(reader),
-		root: token.NewNode(nil, nil),
+		root:    token.NewNode(nil, nil),
 	}
 }
 
@@ -50,7 +50,6 @@ func (p *Parser) insert(it *token.Node, tkn token.Token) *token.Node {
 		it.Append(token.NewNode(it.Parent, tkn))
 	}
 
-
 	return it
 }
 
@@ -75,4 +74,8 @@ func (p *Parser) Parse() error {
 func (p *Parser) scan() token.Token {
 	tkn, _ := p.scanner.Scan()
 	return tkn
+}
+
+func (p *Parser) CallStack() string {
+	return token.CallStack(p.root.FirstArgs())
 }

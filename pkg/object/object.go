@@ -24,4 +24,6 @@ type Object interface {
 
 	// ToInterface retournes la valeur de l'objet (Object)
 	ToInterface() interface{}
+
+	Add(Object) Object
 }
