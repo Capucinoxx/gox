@@ -5,6 +5,7 @@ type Type uint8
 const (
 	OBJECT_NULL Type = iota
 	OBJECT_ERROR
+	OBJECT_OPERATOR
 
 	OBJECT_ARRAY
 
