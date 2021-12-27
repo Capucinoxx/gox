@@ -1,5 +1,10 @@
 package token
 
+import (
+	"fmt"
+	"github.com/Capucinoxx/gox/pkg/object"
+)
+
 const (
 	TOKEN_ILLEGAL (uint8) = iota
 	TOKEN_EOF
@@ -18,31 +23,30 @@ const (
 
 type Node struct {
 	Parent *Node
-	V Token
-	args []*Node
+	V      Token
+	Value  string
+	args   []*Node
+}
+type Token interface {
+	Token() uint8
+	ToObject() object.Object
 }
 
-func NewNode(parent *Node, tkn Token) *Node {
-	return &Node{
-		Parent: parent,
-		V: tkn,
-		args: make([]*Node, 0),
+type ILLEGAL struct{ Node }
+
+func (s *ILLEGAL) Token() uint8 { return TOKEN_ILLEGAL }
+func (s *ILLEGAL) ToObject() object.Object {
+	return object.Error{
+		Error: fmt.Sprintf("illegal token <%s>", s.Value),
 	}
 }
 
-func (n *Node) Append(el *Node) { n.args = append(n.args, el) }
-
-type Token interface {
-	Token() uint8
-}
-
-
-type ILLEGAL struct{ Node }
-func (s *ILLEGAL) Token() uint8 { return TOKEN_ILLEGAL }
-
 type EOF struct{ Node }
-func (s *EOF) Token() uint8 { return TOKEN_EOF }
+
+func (s *EOF) Token() uint8            { return TOKEN_EOF }
+func (s *EOF) ToObject() object.Object { return object.Null{} }
 
 type WS struct{ Node }
-func (s *WS) Token() uint8  { return TOKEN_WS }
 
+func (s *WS) Token() uint8            { return TOKEN_WS }
+func (s *WS) ToObject() object.Object { return object.Null{} }
