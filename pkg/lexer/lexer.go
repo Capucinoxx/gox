@@ -32,7 +32,6 @@ func (s *Scanner) Scan() (token.Token, string) {
 		return s.scanIdentifier()
 	}
 
-
 	switch ch {
 	case eof:
 		return &token.EOF{}, ""
@@ -42,10 +41,10 @@ func (s *Scanner) Scan() (token.Token, string) {
 		return &token.RPAREN{}, string(ch)
 	case '-', '+', '*', '/':
 		if s.read() == '>' {
-			return &token.OPERAND{}, string(ch)+ ">"
+			return &token.OPERAND{}, string(ch) + ">"
 		}
 		s.unread()
-		return &token.OPERAND{}, string(ch)
+		return &token.OPERAND{Value: string(ch)}, string(ch)
 
 	case '"':
 		return s.scanQuote()
@@ -91,7 +90,7 @@ func (s *Scanner) scanQuote() (token.Token, string) {
 		}
 	}
 
-	return &token.IDENTIFIER{}, buf.String()
+	return &token.IDENTIFIER{Value: buf.String()}, buf.String()
 }
 
 func (s *Scanner) scanIdentifier() (token.Token, string) {
@@ -116,7 +115,7 @@ func (s *Scanner) scanIdentifier() (token.Token, string) {
 
 	}
 
-	return &token.IDENTIFIER{}, str
+	return &token.IDENTIFIER{Value: buf.String()}, str
 }
 
 // read lit la prochaine rune du buffered reader.
