@@ -10,6 +10,8 @@ const (
 	ERROR_ADDITINYING_STRING = "L'addition de <object.String> n'est pas supporté avec la valeur "
 
 	ERROR_SUBTRACTING_STRING = "La soustraction de <object.String> n'est pas supporté avec la valeur "
+
+	ERROR_DIVISION_STRING = "La division de <object.String> n'est pas supporté avec la valeur "
 )
 
 type String struct{ Value string }
@@ -50,4 +52,10 @@ func (s String) Mul(oth Object) Object {
 	default:
 		return Error{Error: ERROR_MULTIPLYING_STRING + oth.ToString()}
 	}
+}
+
+// Div retournes une Erreur puisque la division n'est pas supporté pour l'objet
+// de type String
+func (s String) Div(oth Object) Object {
+	return Error{Error: ERROR_DIVISION_STRING + oth.ToString()}
 }

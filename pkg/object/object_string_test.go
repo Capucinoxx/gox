@@ -136,3 +136,42 @@ func TestMulString(t *testing.T) {
 		})
 	}
 }
+
+func TestDivString(t *testing.T) {
+	cases := map[string]struct {
+		a       object.String
+		b       object.Object
+		wantStr string
+	}{
+		"failed division String with String": {
+			a:       object.String{Value: "tt"},
+			b:       object.String{Value: "tt"},
+			wantStr: object.ERROR_DIVISION_STRING + "tt",
+		},
+		"failed division String with Null": {
+			a:       object.String{Value: "tt"},
+			b:       object.Null{},
+			wantStr: object.ERROR_DIVISION_STRING + "null",
+		},
+		"failed division String with Number": {
+			a:       object.String{Value: "tt"},
+			b:       object.Number{Value: 4},
+			wantStr: object.ERROR_DIVISION_STRING + "4",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			res := tt.a.Div(tt.b)
+
+			if tt.wantStr != res.ToString() {
+				t.Errorf(
+					"%q multiplication mismatch: exp=%s got=%s",
+					tt.b,
+					res,
+					tt.wantStr,
+				)
+			}
+		})
+	}
+}
