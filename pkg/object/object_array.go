@@ -1,6 +1,8 @@
 package object
 
-import "bytes"
+import (
+	"bytes"
+)
 
 type Array struct{ Elements []Object }
 
@@ -13,11 +15,14 @@ func (a Array) ToString() string {
 	var out bytes.Buffer
 
 	out.WriteRune('[')
-	for i := 0; i < len(a.Elements)-1; i++ {
-		out.WriteString(a.Elements[i].ToString())
-		out.WriteString(", ")
+	if len(a.Elements) > 0 {
+		for i := 0; i < len(a.Elements)-1; i++ {
+			out.WriteString(a.Elements[i].ToString())
+			out.WriteString(", ")
+		}
+		out.WriteString(a.Elements[len(a.Elements)-1].ToString())
 	}
-	out.WriteString(a.Elements[len(a.Elements)-1].ToString())
+
 	out.WriteRune(']')
 
 	return out.String()
