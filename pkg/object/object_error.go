@@ -32,3 +32,5 @@ func (i Error) Add(oth Object) Object {
 // Sub retournes l'erreur courante puisque l'addition d'erreur
 // n'est pas implémenté
 func (i Error) Sub(oth Object) Object { return i }
+
+func (i Error) Mul(oth Object) Object { return i }
