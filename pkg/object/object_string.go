@@ -1,5 +1,11 @@
 package object
 
+import "strings"
+
+const (
+	ERROR_MULTIPLYING_STRING = "La multiplication de <object.String> n'est pas supporté avec la valeur "
+)
+
 type String struct{ Value string }
 
 // Type retourne le type de l'objet (OBJECT_STRING)
@@ -22,4 +28,15 @@ func (s String) Add(oth Object) Object {
 // de type String
 func (s String) Sub(oth Object) Object {
 	return Error{Error: "la soustraction n'est pas implémenté pour le type String"}
+}
+
+// Mul retournes une répétition de n fois la chaîne de caractère si l'objet
+// présent est de type (object.Number). Sinon retourne une erreur
+func (s String) Mul(oth Object) Object {
+	switch o := oth.(type) {
+	case Number:
+		return String{Value: strings.Repeat(s.Value, int(o.Value))}
+	default:
+		return Error{Error: ERROR_MULTIPLYING_STRING + oth.ToString()}
+	}
 }

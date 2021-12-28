@@ -178,3 +178,42 @@ func TestChanObjectSub(t *testing.T) {
 		})
 	}
 }
+
+func TestMulString(t *testing.T) {
+	cases := map[string]struct {
+		a       object.String
+		b       object.Object
+		wantStr string
+	}{
+		"failed multiply String with String": {
+			a:       object.String{Value: "tt"},
+			b:       object.String{Value: "tt"},
+			wantStr: object.ERROR_MULTIPLYING_STRING + "tt",
+		},
+		"failed mul String with Null": {
+			a:       object.String{Value: "tt"},
+			b:       object.Null{},
+			wantStr: object.ERROR_MULTIPLYING_STRING + "null",
+		},
+		"success multiply String with Number": {
+			a:       object.String{Value: "tt"},
+			b:       object.Number{Value: 4},
+			wantStr: "tttttttt",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			res := tt.a.Mul(tt.b)
+
+			if tt.wantStr != res.ToString() {
+				t.Errorf(
+					"%q multiplication mismatch: exp=%s got=%s",
+					tt.b,
+					res,
+					tt.wantStr,
+				)
+			}
+		})
+	}
+}
