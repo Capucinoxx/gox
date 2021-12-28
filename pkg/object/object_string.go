@@ -5,16 +5,15 @@ import (
 )
 
 const (
-	ERROR_MULTIPLYING_STRING = "La multiplication de <object.String> n'est pas supporté avec la valeur "
-
-	ERROR_ADDITINYING_STRING = "L'addition de <object.String> n'est pas supporté avec la valeur "
-
-	ERROR_SUBTRACTING_STRING = "La soustraction de <object.String> n'est pas supporté avec la valeur "
-
-	ERROR_DIVISION_STRING = "La division de <object.String> n'est pas supporté avec la valeur "
+	ERROR_MULTIPLICATION_STRING = "La multiplication de <object.String> n'est pas supporté avec la valeur "
+	ERROR_ADDITION_STRING       = "L'addition de <object.String> n'est pas supporté avec la valeur "
+	ERROR_SUBTRACTION_STRING    = "La soustraction de <object.String> n'est pas supporté avec la valeur "
+	ERROR_DIVISION_STRING       = "La division de <object.String> n'est pas supporté avec la valeur "
 )
 
-type String struct{ Value string }
+type String struct {
+	Value string
+}
 
 // Type retourne le type de l'objet (OBJECT_STRING)
 func (s String) Type() Type { return OBJECT_STRING }
@@ -33,14 +32,14 @@ func (s String) Add(oth Object) Object {
 	case Number, String:
 		return String{Value: s.Value + oth.ToString()}
 	default:
-		return Error{Error: ERROR_ADDITINYING_STRING + oth.ToString()}
+		return Error{Error: ERROR_ADDITION_STRING + oth.ToString()}
 	}
 }
 
 // Sub retournes une Erreur puisqu'elle n'est pas implémentée pour l'objet
 // de type String
 func (s String) Sub(oth Object) Object {
-	return Error{Error: ERROR_SUBTRACTING_STRING + oth.ToString()}
+	return Error{Error: ERROR_SUBTRACTION_STRING + oth.ToString()}
 }
 
 // Mul retournes une répétition de n fois la chaîne de caractère si l'objet
@@ -50,7 +49,7 @@ func (s String) Mul(oth Object) Object {
 	case Number:
 		return String{Value: strings.Repeat(s.Value, int(o.Value))}
 	default:
-		return Error{Error: ERROR_MULTIPLYING_STRING + oth.ToString()}
+		return Error{Error: ERROR_MULTIPLICATION_STRING + oth.ToString()}
 	}
 }
 

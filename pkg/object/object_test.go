@@ -137,7 +137,7 @@ func TestChanObjectSub(t *testing.T) {
 		},
 		"string addition": {
 			obj:     object.String{Value: "t"},
-			wantStr: object.ERROR_SUBTRACTING_STRING + "t",
+			wantStr: object.ERROR_SUBTRACTION_STRING + "t",
 		},
 		"array addition": {
 			obj: object.Array{

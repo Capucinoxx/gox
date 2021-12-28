@@ -11,27 +11,27 @@ func TestAddString(t *testing.T) {
 		b       object.Object
 		wantStr string
 	}{
-		"failed aditionying String with Null": {
+		"object.String.Add(object.Null): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Null{},
-			wantStr: object.ERROR_ADDITINYING_STRING + "null",
+			wantStr: object.ERROR_ADDITION_STRING + "null",
 		},
-		"failed aditionying String with Array": {
+		"object.String.Add(object.Array): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Array{},
-			wantStr: object.ERROR_ADDITINYING_STRING + "[]",
+			wantStr: object.ERROR_ADDITION_STRING + "[]",
 		},
-		"success aditionying String with String": {
+		"object.String.Add(object.String): object.String": {
 			a:       object.String{Value: "tt"},
 			b:       object.String{Value: "tt"},
 			wantStr: "tttt",
 		},
-		"success aditionying String with Number 1": {
+		"object.String.Add(object.Number): object.String (1)": {
 			a:       object.String{Value: "tt"},
 			b:       object.Number{Value: 3},
 			wantStr: "tt3",
 		},
-		"success aditionying String with Number 2": {
+		"object.String.Add(object.Number): object.String (2)": {
 			a:       object.String{Value: "tt"},
 			b:       object.Number{Value: 3.14},
 			wantStr: "tt3.14",
@@ -60,25 +60,25 @@ func TestSubString(t *testing.T) {
 		b       object.Object
 		wantStr string
 	}{
-		"failed subtraction String with String": {
+		"object.String.Sub(object.String): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.String{Value: "tt"},
-			wantStr: object.ERROR_SUBTRACTING_STRING + "tt",
+			wantStr: object.ERROR_SUBTRACTION_STRING + "tt",
 		},
-		"failed subtraction String with Number": {
+		"object.String.Sub(object.Number): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Number{Value: 3.14},
-			wantStr: object.ERROR_SUBTRACTING_STRING + "3.14",
+			wantStr: object.ERROR_SUBTRACTION_STRING + "3.14",
 		},
-		"failed subtraction String with Array": {
+		"object.String.Sub(object.Array): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Array{},
-			wantStr: object.ERROR_SUBTRACTING_STRING + "[]",
+			wantStr: object.ERROR_SUBTRACTION_STRING + "[]",
 		},
-		"failed subtraction String with Null": {
+		"object.String.Sub(object.Null): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Null{},
-			wantStr: object.ERROR_SUBTRACTING_STRING + "null",
+			wantStr: object.ERROR_SUBTRACTION_STRING + "null",
 		},
 	}
 
@@ -104,17 +104,17 @@ func TestMulString(t *testing.T) {
 		b       object.Object
 		wantStr string
 	}{
-		"failed multiply String with String": {
+		"object.String.Mul(object.String): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.String{Value: "tt"},
-			wantStr: object.ERROR_MULTIPLYING_STRING + "tt",
+			wantStr: object.ERROR_MULTIPLICATION_STRING + "tt",
 		},
-		"failed mul String with Null": {
+		"object.String.Mul(object.Null): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Null{},
-			wantStr: object.ERROR_MULTIPLYING_STRING + "null",
+			wantStr: object.ERROR_MULTIPLICATION_STRING + "null",
 		},
-		"success multiply String with Number": {
+		"object.String.Mul(object.Number): object.String": {
 			a:       object.String{Value: "tt"},
 			b:       object.Number{Value: 4},
 			wantStr: "tttttttt",
@@ -143,17 +143,17 @@ func TestDivString(t *testing.T) {
 		b       object.Object
 		wantStr string
 	}{
-		"failed division String with String": {
+		"object.String.Div(object.String): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.String{Value: "tt"},
 			wantStr: object.ERROR_DIVISION_STRING + "tt",
 		},
-		"failed division String with Null": {
+		"object.String.Div(object.Null): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Null{},
 			wantStr: object.ERROR_DIVISION_STRING + "null",
 		},
-		"failed division String with Number": {
+		"object.String.Div(object.Number): object.Error": {
 			a:       object.String{Value: "tt"},
 			b:       object.Number{Value: 4},
 			wantStr: object.ERROR_DIVISION_STRING + "4",
