@@ -1,9 +1,13 @@
 package object
 
-import "strings"
+import (
+	"strings"
+)
 
 const (
 	ERROR_MULTIPLYING_STRING = "La multiplication de <object.String> n'est pas supporté avec la valeur "
+
+	ERROR_ADDITINYING_STRING = "L'addition de <object.String> n'est pas supporté avec la valeur "
 )
 
 type String struct{ Value string }
@@ -21,7 +25,12 @@ func (s String) ToInterface() interface{} { return s }
 // Add retournes la concaténation entre la valeur de l'objet présent et celui
 // passé en paramètre
 func (s String) Add(oth Object) Object {
-	return String{Value: oth.(String).Value + s.Value}
+	switch oth.(type) {
+	case Number, String:
+		return String{Value: s.Value + oth.ToString()}
+	default:
+		return Error{Error: ERROR_ADDITINYING_STRING + oth.ToString()}
+	}
 }
 
 // Sub retournes une Erreur puisqu'elle n'est pas implémentée pour l'objet

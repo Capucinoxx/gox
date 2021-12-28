@@ -179,6 +179,55 @@ func TestChanObjectSub(t *testing.T) {
 	}
 }
 
+func TestAddString(t *testing.T) {
+	cases := map[string]struct {
+		a       object.String
+		b       object.Object
+		wantStr string
+	}{
+		"failed aditionying String with Null": {
+			a:       object.String{Value: "tt"},
+			b:       object.Null{},
+			wantStr: object.ERROR_ADDITINYING_STRING + "null",
+		},
+		"failed aditionying String with Array": {
+			a:       object.String{Value: "tt"},
+			b:       object.Array{},
+			wantStr: object.ERROR_ADDITINYING_STRING + "[]",
+		},
+		"success aditionying String with String": {
+			a:       object.String{Value: "tt"},
+			b:       object.String{Value: "tt"},
+			wantStr: "tttt",
+		},
+		"success aditionying String with Number 1": {
+			a:       object.String{Value: "tt"},
+			b:       object.Number{Value: 3},
+			wantStr: "tt3",
+		},
+		"success aditionying String with Number 2": {
+			a:       object.String{Value: "tt"},
+			b:       object.Number{Value: 3.14},
+			wantStr: "tt3.14",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			res := tt.a.Add(tt.b)
+
+			if tt.wantStr != res.ToString() {
+				t.Errorf(
+					"%q addition mismatch: exp=%s got=%s",
+					tt.b,
+					res,
+					tt.wantStr,
+				)
+			}
+		})
+	}
+}
+
 func TestMulString(t *testing.T) {
 	cases := map[string]struct {
 		a       object.String
