@@ -8,6 +8,8 @@ const (
 	ERROR_MULTIPLYING_STRING = "La multiplication de <object.String> n'est pas supporté avec la valeur "
 
 	ERROR_ADDITINYING_STRING = "L'addition de <object.String> n'est pas supporté avec la valeur "
+
+	ERROR_SUBTRACTING_STRING = "La soustraction de <object.String> n'est pas supporté avec la valeur "
 )
 
 type String struct{ Value string }
@@ -36,7 +38,7 @@ func (s String) Add(oth Object) Object {
 // Sub retournes une Erreur puisqu'elle n'est pas implémentée pour l'objet
 // de type String
 func (s String) Sub(oth Object) Object {
-	return Error{Error: "la soustraction n'est pas implémenté pour le type String"}
+	return Error{Error: ERROR_SUBTRACTING_STRING + oth.ToString()}
 }
 
 // Mul retournes une répétition de n fois la chaîne de caractère si l'objet

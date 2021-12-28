@@ -137,7 +137,7 @@ func TestChanObjectSub(t *testing.T) {
 		},
 		"string addition": {
 			obj:     object.String{Value: "t"},
-			wantStr: "la soustraction n'est pas implémenté pour le type String",
+			wantStr: object.ERROR_SUBTRACTING_STRING + "t",
 		},
 		"array addition": {
 			obj: object.Array{
@@ -219,6 +219,50 @@ func TestAddString(t *testing.T) {
 			if tt.wantStr != res.ToString() {
 				t.Errorf(
 					"%q addition mismatch: exp=%s got=%s",
+					tt.b,
+					res,
+					tt.wantStr,
+				)
+			}
+		})
+	}
+}
+
+func TestSubString(t *testing.T) {
+	cases := map[string]struct {
+		a       object.String
+		b       object.Object
+		wantStr string
+	}{
+		"failed subtraction String with String": {
+			a:       object.String{Value: "tt"},
+			b:       object.String{Value: "tt"},
+			wantStr: object.ERROR_SUBTRACTING_STRING + "tt",
+		},
+		"failed subtraction String with Number": {
+			a:       object.String{Value: "tt"},
+			b:       object.Number{Value: 3.14},
+			wantStr: object.ERROR_SUBTRACTING_STRING + "3.14",
+		},
+		"failed subtraction String with Array": {
+			a:       object.String{Value: "tt"},
+			b:       object.Array{},
+			wantStr: object.ERROR_SUBTRACTING_STRING + "[]",
+		},
+		"failed subtraction String with Null": {
+			a:       object.String{Value: "tt"},
+			b:       object.Null{},
+			wantStr: object.ERROR_SUBTRACTING_STRING + "null",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			res := tt.a.Sub(tt.b)
+
+			if tt.wantStr != res.ToString() {
+				t.Errorf(
+					"%q subtraction mismatch: exp=%s got=%s",
 					tt.b,
 					res,
 					tt.wantStr,
