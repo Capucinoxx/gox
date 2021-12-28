@@ -136,3 +136,47 @@ func TestMulNumber(t *testing.T) {
 		})
 	}
 }
+
+func TestDivNumber(t *testing.T) {
+	cases := map[string]struct {
+		a       object.Number
+		b       object.Object
+		wantStr string
+	}{
+		"object.Number.Div(object.String): object.Error": {
+			a:       object.Number{Value: 3},
+			b:       object.String{Value: "tow"},
+			wantStr: object.ERROR_DIVISION_NUMBER + "tow",
+		},
+		"object.Number.Div(object.Number): object.Number": {
+			a:       object.Number{Value: 3.15},
+			b:       object.Number{Value: 6},
+			wantStr: "0.525",
+		},
+		"object.Number.Div(object.Null): object.Error": {
+			a:       object.Number{Value: 3.14},
+			b:       object.Null{},
+			wantStr: object.ERROR_DIVISION_NUMBER + "null",
+		},
+		"object.Number.Div(object.Array): object.Error": {
+			a:       object.Number{Value: 3.14},
+			b:       object.Array{},
+			wantStr: object.ERROR_DIVISION_NUMBER + "[]",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			res := tt.a.Div(tt.b)
+
+			if tt.wantStr != res.ToString() {
+				t.Errorf(
+					"%q division mismatch: exp=%s got=%s",
+					tt.b,
+					res,
+					tt.wantStr,
+				)
+			}
+		})
+	}
+}
