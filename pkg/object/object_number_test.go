@@ -58,7 +58,7 @@ func TestSubNumber(t *testing.T) {
 		"object.Number.Sub(object.Null): object.Error": {
 			a:       object.Number{Value: 3.14},
 			b:       object.Null{},
-			wantStr: object.ERROR_ADDITION_NUMBER + "null",
+			wantStr: object.ERROR_SUBTRACTION_NUMBER + "null",
 		},
 		"object.Number.Sub(object.Number): object.Number": {
 			a:       object.Number{Value: 3.14},
@@ -68,12 +68,12 @@ func TestSubNumber(t *testing.T) {
 		"object.Number.Sub(object.Array): object.Error": {
 			a:       object.Number{Value: 3.14},
 			b:       object.Array{},
-			wantStr: object.ERROR_ADDITION_NUMBER + "[]",
+			wantStr: object.ERROR_SUBTRACTION_NUMBER + "[]",
 		},
 		"object.Number.Sub(object.String): object.Error": {
 			a:       object.Number{Value: 3.14},
 			b:       object.String{},
-			wantStr: object.ERROR_ADDITION_NUMBER + "",
+			wantStr: object.ERROR_SUBTRACTION_NUMBER + "",
 		},
 	}
 
@@ -112,12 +112,12 @@ func TestMulNumber(t *testing.T) {
 		"object.Number.Mul(object.Null): object.Error": {
 			a:       object.Number{Value: 3.14},
 			b:       object.Null{},
-			wantStr: object.ERROR_SUBTRACTION_NUMBER + "null",
+			wantStr: object.ERROR_MULTIPLICATION_NUMBER + "null",
 		},
 		"object.Number.Mul(object.Array): object.Error": {
 			a:       object.Number{Value: 3.14},
 			b:       object.Array{},
-			wantStr: object.ERROR_SUBTRACTION_NUMBER + "[]",
+			wantStr: object.ERROR_MULTIPLICATION_NUMBER + "[]",
 		},
 	}
 
