@@ -35,5 +35,10 @@ func (i Number) Add(oth Object) Object {
 // Sub retournes une objet représentant la soustraction du Nombre courant et
 // celui passé en paramètre
 func (i Number) Sub(oth Object) Object {
-	return Number{Value: i.Value - oth.(Number).Value}
+	switch o := oth.(type) {
+	case Number:
+		return Number{Value: i.Value - o.Value}
+	default:
+		return Error{Error: ERROR_ADDITION_NUMBER + oth.ToString()}
+	}
 }

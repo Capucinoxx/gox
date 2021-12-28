@@ -48,3 +48,47 @@ func TestAddNumber(t *testing.T) {
 		})
 	}
 }
+
+func TestSubNumber(t *testing.T) {
+	cases := map[string]struct {
+		a       object.Number
+		b       object.Object
+		wantStr string
+	}{
+		"object.Number.Sub(object.Null): object.Error": {
+			a:       object.Number{Value: 3.14},
+			b:       object.Null{},
+			wantStr: object.ERROR_ADDITION_NUMBER + "null",
+		},
+		"object.Number.Sub(object.Number): object.Number": {
+			a:       object.Number{Value: 3.14},
+			b:       object.Number{Value: 3.14},
+			wantStr: "0",
+		},
+		"object.Number.Sub(object.Array): object.Error": {
+			a:       object.Number{Value: 3.14},
+			b:       object.Array{},
+			wantStr: object.ERROR_ADDITION_NUMBER + "[]",
+		},
+		"object.Number.Sub(object.String): object.Error": {
+			a:       object.Number{Value: 3.14},
+			b:       object.String{},
+			wantStr: object.ERROR_ADDITION_NUMBER + "",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			res := tt.a.Sub(tt.b)
+
+			if tt.wantStr != res.ToString() {
+				t.Errorf(
+					"%q subtraction mismatch: exp=%s got=%s",
+					tt.b,
+					res,
+					tt.wantStr,
+				)
+			}
+		})
+	}
+}
