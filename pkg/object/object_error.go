@@ -15,7 +15,19 @@ func (i Error) ToInterface() interface{} { return i }
 
 // Add retournes l'erreur courante puisque l'addition d'erreur
 // n'est pas implémenté
-func (i Error) Add(oth Object) Object { return i }
+func (i Error) Add(oth Object) Object {
+	switch o := oth.(type) {
+	case Array:
+		o.Elements = append(o.Elements, Error{})
+		copy(o.Elements[1:], o.Elements)
+		o.Elements[0] = i
+		return o
+	case Error:
+		return Array{Elements: []Object{i, oth}}
+	}
+
+	return i
+}
 
 // Sub retournes l'erreur courante puisque l'addition d'erreur
 // n'est pas implémenté
