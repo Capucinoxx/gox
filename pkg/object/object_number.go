@@ -2,10 +2,12 @@ package object
 
 import (
 	"fmt"
+	"strings"
 )
 
 const (
-	ERROR_ADDITION_NUMBER = "L'addition de <object.Number> n'est pas supporté avec la valeur "
+	ERROR_ADDITION_NUMBER    = "L'addition de <object.Number> n'est pas supporté avec la valeur "
+	ERROR_SUBTRACTION_NUMBER = "L'addition de <object.String> n'est pas supporté avec la valeur "
 )
 
 // Number objet représentant un nombre
@@ -40,5 +42,16 @@ func (i Number) Sub(oth Object) Object {
 		return Number{Value: i.Value - o.Value}
 	default:
 		return Error{Error: ERROR_ADDITION_NUMBER + oth.ToString()}
+	}
+}
+
+func (i Number) Mul(oth Object) Object {
+	switch o := oth.(type) {
+	case Number:
+		return Number{Value: i.Value * o.Value}
+	case String:
+		return String{Value: strings.Repeat(o.Value, int(i.Value))}
+	default:
+		return Error{Error: ERROR_SUBTRACTION_NUMBER + oth.ToString()}
 	}
 }
