@@ -137,7 +137,7 @@ func TestChanObjectSub(t *testing.T) {
 		},
 		"string addition": {
 			obj:     object.String{Value: "t"},
-			wantStr: "la soustraction n'est pas implémenté pour le type String",
+			wantStr: object.ERROR_SUBTRACTION_STRING + "t",
 		},
 		"array addition": {
 			obj: object.Array{
