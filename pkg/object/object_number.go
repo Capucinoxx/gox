@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+const (
+	ERROR_ADDITION_NUMBER = "L'addition de <object.Number> n'est pas supporté avec la valeur "
+)
+
 // Number objet représentant un nombre
 type Number struct{ Value float64 }
 
@@ -20,7 +24,12 @@ func (i Number) ToInterface() interface{} { return i }
 // Add retournes une objet représentant l'addition du Nombre courant et celui
 // passé en paramètre
 func (i Number) Add(oth Object) Object {
-	return Number{Value: i.Value + oth.(Number).Value}
+	switch o := oth.(type) {
+	case Number:
+		return Number{Value: i.Value + o.Value}
+	default:
+		return Error{Error: ERROR_ADDITION_NUMBER + oth.ToString()}
+	}
 }
 
 // Sub retournes une objet représentant la soustraction du Nombre courant et
