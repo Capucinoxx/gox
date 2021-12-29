@@ -4,6 +4,10 @@ import (
 	"bytes"
 )
 
+const (
+	ERROR_SUBTRACTION_ARRAY = "La soustraction de <object.Array> n'est pas supporté avec la valeur "
+)
+
 type Array struct{ Elements []Object }
 
 // Type retourne le type de l'objet (OBJECT_ARRAY)
@@ -48,5 +52,10 @@ func (a Array) Add(oth Object) Object {
 // Sub retournes une Erreur puisqu'elle n'est pas implémentée pour l'objet
 // de type Array.
 func (a Array) Sub(oth Object) Object {
-	return Error{Error: "la soustraction n'est pas implémenté pour le type Array"}
+	switch oth.(type) {
+	case Null:
+		return a
+	default:
+		return Error{Error: ERROR_SUBTRACTION_ARRAY + oth.ToString()}
+	}
 }
