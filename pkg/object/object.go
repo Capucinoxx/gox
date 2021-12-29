@@ -33,4 +33,8 @@ type Object interface {
 	// Sub retournes une objet représentant la soustraction de l'objet courant
 	// et de l'objet en paramètre
 	Sub(Object) Object
+
+	Mul(Object) Object
+
+	Div(Object) Object
 }
