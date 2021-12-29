@@ -22,6 +22,8 @@ func (c *Chan) GenFunc(str string) {
 		c.Fn = func(obj Object) Object { return c.Add(obj) }
 	case "-":
 		c.Fn = func(obj Object) Object { return c.Sub(obj) }
+	case "*":
+		c.Fn = func(obj Object) Object { return c.Mul(obj) }
 	}
 }
 
@@ -41,5 +43,17 @@ func (c Chan) Add(obj Object) Object {
 func (c Chan) Sub(obj Object) Object {
 	old := <-c.ch
 	c.ch <- func() Object { return old().Sub(obj) }
+	return nil
+}
+
+func (c Chan) Mul(obj Object) Object {
+	old := <-c.ch
+	c.ch <- func() Object { return old().Mul(obj) }
+	return nil
+}
+
+func (c Chan) Div(obj Object) Object {
+	old := <-c.ch
+	c.ch <- func() Object { return old().Div(obj) }
 	return nil
 }
