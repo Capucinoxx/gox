@@ -35,7 +35,7 @@ func TestChanAdd(t *testing.T) {
 			ch.GenFunc("+")
 
 			for i := 0; i < tt.loopTime; i++ {
-				ch.Add(tt.value)
+				ch.Fn(tt.value)
 			}
 
 			res := ch.Eval()
@@ -61,7 +61,7 @@ func TestChanSub(t *testing.T) {
 		"object.Chan.Sub(10) 20 times: object.Number": {
 			loopTime: 20,
 			value:    object.Number{Value: 10},
-			wantStr:  "-200",
+			wantStr:  "-180",
 		},
 		"object.Chan.Sub('t') 10 times: object.Error": {
 			loopTime: 10,
@@ -79,10 +79,10 @@ func TestChanSub(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			ch := object.Chan{}
 			ch.Make()
-			ch.GenFunc("+")
+			ch.GenFunc("-")
 
 			for i := 0; i < tt.loopTime; i++ {
-				ch.Sub(tt.value)
+				ch.Fn(tt.value)
 			}
 
 			res := ch.Eval()
