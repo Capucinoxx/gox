@@ -42,6 +42,11 @@ func TestObject(t *testing.T) {
 			t:       object.OBJECT_NULL,
 			wantStr: "null",
 		},
+		"object chan": {
+			obj:     object.Chan{},
+			t:       object.OBJECT_OPERATOR,
+			wantStr: "",
+		},
 	}
 
 	for name, tt := range cases {
