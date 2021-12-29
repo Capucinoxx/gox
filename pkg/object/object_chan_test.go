@@ -140,3 +140,45 @@ func TestChanMul(t *testing.T) {
 		})
 	}
 }
+
+func TestChanDiv(t *testing.T) {
+	cases := map[string]struct {
+		loopTime int
+		value    object.Object
+		wantStr  string
+	}{
+		"object.Chan.Div(5) 5 times: object.Number": {
+			loopTime: 5,
+			value:    object.Number{Value: 5},
+			wantStr:  "0.008",
+		},
+		"object.Chan.Div('t') 5 times: object.Error": {
+			loopTime: 5,
+			value:    object.String{Value: "t"},
+			wantStr:  object.ERROR_DIVISION_STRING + "t",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			ch := object.Chan{}
+			ch.Make()
+			ch.GenFunc("/")
+
+			for i := 0; i < tt.loopTime; i++ {
+				ch.Fn(tt.value)
+			}
+
+			res := ch.Eval()
+
+			if res.ToString() != tt.wantStr {
+				t.Errorf(
+					"%q string mismatch: exp=%s got=%s",
+					res,
+					tt.wantStr,
+					res.ToString(),
+				)
+			}
+		})
+	}
+}

@@ -24,6 +24,8 @@ func (c *Chan) GenFunc(str string) {
 		c.Fn = func(obj Object) Object { return c.Sub(obj) }
 	case "*":
 		c.Fn = func(obj Object) Object { return c.Mul(obj) }
+	case "/":
+		c.Fn = func(obj Object) Object { return c.Div(obj) }
 	}
 }
 
