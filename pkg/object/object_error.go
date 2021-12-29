@@ -34,3 +34,5 @@ func (i Error) Add(oth Object) Object {
 func (i Error) Sub(oth Object) Object { return i }
 
 func (i Error) Mul(oth Object) Object { return i }
+
+func (i Error) Div(oth Object) Object { return i }
