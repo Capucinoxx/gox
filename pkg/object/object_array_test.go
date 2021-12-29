@@ -151,3 +151,52 @@ func TestArrayMul(t *testing.T) {
 		})
 	}
 }
+
+func TestArrayDiv(t *testing.T) {
+	cases := map[string]struct {
+		a       object.Array
+		b       object.Object
+		wantStr string
+	}{
+		"object.Array.Div(object.String): object.Error": {
+			a:       object.Array{Elements: []object.Object{object.String{Value: "xxx"}}},
+			b:       object.String{Value: "ttt"},
+			wantStr: object.ERROR_DIVISION_ARRAY + "ttt",
+		},
+		"object.Array.Div(object.Number): object.Error": {
+			a:       object.Array{Elements: []object.Object{object.Number{Value: 3.14}}},
+			b:       object.Number{Value: 3},
+			wantStr: object.ERROR_DIVISION_ARRAY + "3",
+		},
+		"object.Array.Div(object.Array): object.Error": {
+			a:       object.Array{Elements: []object.Object{object.Number{Value: 3.14}}},
+			b:       object.Array{Elements: []object.Object{object.Number{Value: 3.14}}},
+			wantStr: object.ERROR_DIVISION_ARRAY + "[3.14]",
+		},
+		"object.Array.Div(object.Error): object.Error": {
+			a:       object.Array{Elements: []object.Object{object.Number{Value: 3.14}}},
+			b:       object.Error{Error: "err"},
+			wantStr: object.ERROR_DIVISION_ARRAY + "err",
+		},
+		"object.Array.Div(object.Null): object.Array": {
+			a:       object.Array{Elements: []object.Object{object.Number{Value: 3.14}}},
+			b:       object.Null{},
+			wantStr: object.ERROR_DIVISION_ARRAY + "null",
+		},
+	}
+
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
+			res := tt.a.Div(tt.b)
+
+			if res.ToString() != tt.wantStr {
+				t.Errorf(
+					"%q division mismatch: exp=%s got=%s",
+					res,
+					tt.wantStr,
+					res.ToString(),
+				)
+			}
+		})
+	}
+}

@@ -7,6 +7,7 @@ import (
 const (
 	ERROR_SUBTRACTION_ARRAY    = "La soustraction de <object.Array> n'est pas supporté avec la valeur "
 	ERROR_MULTIPLICATION_ARRAY = "La multiplication de <object.Array> n'est pas supporté avec la valeur "
+	ERROR_DIVISION_ARRAY       = "La division de <object.Array> n'est pas supporté avec la valeur "
 )
 
 type Array struct{ Elements []Object }
@@ -76,4 +77,8 @@ func (a Array) Mul(oth Object) Object {
 		return arr
 	}
 	return Error{Error: ERROR_MULTIPLICATION_ARRAY + oth.ToString()}
+}
+
+func (a Array) Div(oth Object) Object {
+	return Error{Error: ERROR_DIVISION_ARRAY + oth.ToString()}
 }
