@@ -22,6 +22,11 @@ func TestObject(t *testing.T) {
 			t:       object.OBJECT_STRING,
 			wantStr: "test",
 		},
+		"object error": {
+			obj:     object.Error{Error: "err"},
+			t:       object.OBJECT_ERROR,
+			wantStr: "err",
+		},
 		"object array": {
 			obj: object.Array{
 				Elements: []object.Object{
