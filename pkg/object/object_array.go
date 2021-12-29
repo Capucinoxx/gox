@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	ERROR_SUBTRACTION_ARRAY = "La soustraction de <object.Array> n'est pas supporté avec la valeur "
+	ERROR_SUBTRACTION_ARRAY    = "La soustraction de <object.Array> n'est pas supporté avec la valeur "
+	ERROR_MULTIPLICATION_ARRAY = "La multiplication de <object.Array> n'est pas supporté avec la valeur "
 )
 
 type Array struct{ Elements []Object }
@@ -58,4 +59,21 @@ func (a Array) Sub(oth Object) Object {
 	default:
 		return Error{Error: ERROR_SUBTRACTION_ARRAY + oth.ToString()}
 	}
+}
+
+func (a Array) Mul(oth Object) Object {
+	switch o := oth.(type) {
+	case Number:
+		arr := Array{}
+		n := len(a.Elements)
+		length := int(o.Value)
+		arr.Elements = make([]Object, n*length)
+
+		for i := 0; i < n*length; i++ {
+			arr.Elements[i] = a.Elements[i%n]
+		}
+
+		return arr
+	}
+	return Error{Error: ERROR_MULTIPLICATION_ARRAY + oth.ToString()}
 }
