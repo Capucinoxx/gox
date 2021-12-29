@@ -99,7 +99,7 @@ func TestChanObjectAdd(t *testing.T) {
 		},
 		"error addition": {
 			obj:     object.Error{Error: "err"},
-			wantStr: "err",
+			wantStr: "[err, err, err, err]",
 		},
 	}
 
