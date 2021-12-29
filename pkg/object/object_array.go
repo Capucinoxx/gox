@@ -34,7 +34,15 @@ func (a Array) ToInterface() interface{} { return a }
 // Add retournes un objet représentant la concaténation de l'array et celle
 // passé en paramètre
 func (a Array) Add(oth Object) Object {
-	return Array{Elements: append(a.Elements, oth.(Array).Elements...)}
+	switch o := oth.(type) {
+	case Array:
+		return Array{Elements: append(a.Elements, o.Elements...)}
+	case Null:
+		return a
+	default:
+		return Array{Elements: append(a.Elements, oth)}
+	}
+
 }
 
 // Sub retournes une Erreur puisqu'elle n'est pas implémentée pour l'objet
